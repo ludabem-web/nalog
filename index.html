@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Сравнение налоговых режимов для ИП и ООО">
+  <title>Налоговый навигатор</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Налоговый навигатор">
+      <span class="brand-mark">Н</span>
+      <span><strong>Налоговый навигатор</strong><small>Сравнение режимов для бизнеса</small></span>
+    </a>
+    <button class="icon-button" id="settingsButton" type="button" aria-label="Параметры законодательства" title="Параметры законодательства">⚙</button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Финансовая модель</p>
+        <h1>Какой налоговый режим оставит бизнесу больше?</h1>
+        <p>Укажите показатели за год — сравним все сценарии и покажем расчёт без бухгалтерского лабиринта.</p>
+      </div>
+      <div class="hero-badge"><span>10</span> сценариев<br>в одном расчёте</div>
+    </section>
+
+    <div class="workspace">
+      <aside class="input-panel card">
+        <div class="section-heading">
+          <div><p class="step">Шаг 1</p><h2>Данные бизнеса</h2></div>
+          <button class="text-button" id="exampleButton" type="button">Заполнить пример</button>
+        </div>
+
+        <fieldset class="segmented-field">
+          <legend>Организационная форма <button class="hint" type="button" data-tip="ИП — индивидуальный предприниматель. ООО — юридическое лицо. Выбор влияет на налог ОСНО и порядок учёта страховых взносов.">?</button></legend>
+          <label><input type="radio" name="entity" value="ip" checked><span>ИП</span></label>
+          <label><input type="radio" name="entity" value="ooo"><span>ООО</span></label>
+        </fieldset>
+
+        <label class="field">
+          <span>Выручка за год <button class="hint" type="button" data-tip="Сумма, которую платят покупатели, включая НДС при его наличии.">?</button></span>
+          <span class="money-input"><input id="revenue" inputmode="numeric" value="30 000 000"><b>₽</b></span>
+        </label>
+
+        <div class="input-group">
+          <h3>Переменные расходы</h3>
+          <label class="field">
+            <span>Общая сумма <button class="hint" type="button" data-tip="Расходы, которые меняются вместе с объёмом продаж: закупка товаров, сырья, доставка, комиссия площадок и другие прямые затраты.">?</button></span>
+            <span class="money-input"><input id="variableCosts" inputmode="numeric" value="12 000 000"><b>₽</b></span>
+          </label>
+          <label class="range-field">
+            <span><span>Из них с НДС <button class="hint" type="button" data-tip="Доля переменных расходов по документам поставщиков — плательщиков НДС. Она определяет возможный входящий НДС к вычету.">?</button></span><output id="variableVatShareOutput">60%</output></span>
+            <input id="variableVatShare" type="range" min="0" max="100" value="60">
+          </label>
+        </div>
+
+        <div class="input-group">
+          <h3>Постоянные расходы</h3>
+          <label class="field">
+            <span>Общая сумма <button class="hint" type="button" data-tip="Регулярные расходы, которые напрямую не зависят от объёма продаж: аренда, связь, сервисы, бухгалтерия и другие постоянные затраты.">?</button></span>
+            <span class="money-input"><input id="fixedCosts" inputmode="numeric" value="6 000 000"><b>₽</b></span>
+          </label>
+          <label class="range-field">
+            <span><span>Из них с НДС <button class="hint" type="button" data-tip="Доля постоянных расходов по документам поставщиков — плательщиков НДС. Используется для расчёта входящего НДС.">?</button></span><output id="fixedVatShareOutput">40%</output></span>
+            <input id="fixedVatShare" type="range" min="0" max="100" value="40">
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Взносы за работников <button class="hint" type="button" data-tip="По ТЗ сумма используется для уменьшения УСН «Доходы», но не вычитается из операционной прибыли.">?</button></span>
+          <span class="money-input"><input id="employeeContributions" inputmode="numeric" value="900 000"><b>₽</b></span>
+        </label>
+
+        <div class="input-summary"><span>Расходы / выручка</span><strong id="costRatio">—</strong></div>
+      </aside>
+
+      <section class="results" aria-live="polite">
+        <div class="section-heading result-title">
+          <div><p class="step">Шаг 2</p><h2>Результат сравнения</h2></div>
+          <span class="status-dot">Расчёт обновлён</span>
+        </div>
+
+        <article class="winner-card" id="winnerCard">
+          <div class="winner-copy">
+            <p class="winner-label">Лучший результат по чистой прибыли</p>
+            <h2 id="winnerName">—</h2>
+            <p id="winnerLead">—</p>
+            <div class="winner-metrics">
+              <div><span>Чистая прибыль</span><strong id="winnerProfit">—</strong></div>
+              <div><span>Рентабельность</span><strong id="winnerMargin">—</strong></div>
+              <div><span>Налог + НДС</span><strong id="winnerBurden">—</strong></div>
+            </div>
+          </div>
+          <div class="winner-seal"><span>№ 1</span><small>из применимых</small></div>
+        </article>
+
+        <article class="card chart-card">
+          <div class="card-title-row">
+            <div><h3>Сравнение сценариев</h3><p>Чистая прибыль после налога</p></div>
+            <div class="chart-legend"><i></i> лучший результат</div>
+          </div>
+          <div id="profitChart" class="bar-chart"></div>
+        </article>
+      </section>
+    </div>
+
+    <section class="card comparison-section">
+      <div class="card-title-row">
+        <div><p class="step">Все варианты</p><h2>Сравнительная таблица</h2></div>
+        <button class="secondary-button" id="exportButton" type="button">Скачать CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Режим</th><th>НДС</th><th>Чистая прибыль</th><th>Налог</th><th>НДС к уплате</th><th>Рентабельность</th><th></th></tr></thead>
+          <tbody id="comparisonBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card details-section" id="detailsSection">
+      <div class="card-title-row">
+        <div><p class="step">Расшифровка</p><h2 id="detailsTitle">Подробный P&amp;L</h2></div>
+        <select id="scenarioSelect" aria-label="Выберите сценарий"></select>
+      </div>
+      <div class="details-grid">
+        <div id="waterfall" class="waterfall"></div>
+        <div class="pnl-wrap">
+          <table class="pnl-table"><thead><tr><th>Показатель</th><th>Сумма</th><th>% выручки</th></tr></thead><tbody id="pnlBody"></tbody></table>
+          <div class="explanation" id="calculationExplanation"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice">
+      <strong>Важно</strong>
+      <p>Расчёт носит информационный характер и следует формулам предоставленного ТЗ. Он не проверяет ограничения применения режимов по виду деятельности, численности и другим условиям.</p>
+    </section>
+  </main>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="settings-shell" id="settingsForm">
+      <div class="dialog-header"><div><p class="step">Экспертный режим</p><h2>Параметры законодательства</h2><p>Изменения сохраняются только в этом браузере.</p></div><button class="icon-button" value="cancel" aria-label="Закрыть">×</button></div>
+      <div id="settingsFields" class="settings-fields"></div>
+      <div class="dialog-actions"><button class="text-button danger" id="resetSettings" type="button">Вернуть значения по умолчанию</button><span></span><button class="secondary-button" value="cancel">Отмена</button><button class="primary-button" id="saveSettings" value="default">Сохранить и пересчитать</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
